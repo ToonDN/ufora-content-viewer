@@ -1,0 +1,28 @@
+<div class="page-content-wrapper" id="page-content-{{id}}" style="display: none;">
+    {{toc_html}}
+</div>
+<div class="right-bar" id="right-bar-{{id}}" style="display: none;">
+    <div class="container-fluid">
+
+        <ul class="nav nav-pills nav-fill">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" id="right-sidebar-announcements-tab-{{id}}"
+                    onclick="rightSidebarSelect(0, '{{id}}')">Aankondigingen</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" id="right-sidebar-tasks-tab-{{id}}"
+                    onclick="rightSidebarSelect(1, '{{id}}')"> Taken </a>
+            </li>
+        </ul>
+        <div style="display: block;" id="right-sidebar-announcements-{{id}}">
+            {{announcements_html}}
+        </div>
+        <div style="display: none" id="right-sidebar-tasks-{{id}}">
+            {{tasks_html}}
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+</div>

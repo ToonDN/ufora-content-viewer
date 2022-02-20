@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>Ufora content</title>
+
+        <link rel="stylesheet" href="./components/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="./components/sidebar/sidebar.css">
+        <!-- <link rel="stylesheet" href="./components/font-awesome/font-awesome.min.css"> -->
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+    </head>
+
+</head>
+
+<script>
+    var currentId = null;
+
+    window.localstoragekeyIdMapTextfield = {};
+    window.idLocalstoragekeyMapTextfield = {};
+
+    window.localstoragekeyIdMapCheckbox = {};
+    window.idLocalstoragekeyMapCheckbox = {};
+
+    function addLocalstoragekeyIdMapping(localstoragekey, id, inputType) {
+        if (inputType === "textfield") {
+            if (!window.localstoragekeyIdMapTextfield.hasOwnProperty(localstoragekey)) {
+                window.localstoragekeyIdMapTextfield[localstoragekey] = []
+            }
+            window.localstoragekeyIdMapTextfield[localstoragekey].push(id)
+            window.idLocalstoragekeyMapTextfield[id] = localstoragekey
+        } else if (inputType === "checkbox") {
+            if (!window.localstoragekeyIdMapCheckbox.hasOwnProperty(localstoragekey)) {
+                window.localstoragekeyIdMapCheckbox[localstoragekey] = []
+            }
+            window.localstoragekeyIdMapCheckbox[localstoragekey].push(id)
+            window.idLocalstoragekeyMapCheckbox[id] = localstoragekey
+        } else {
+            throw new Error('Input type should be either textfield or checkbox');
+        }
+
+    }
+
+    function rightSidebarSelect(tabIndex, courseId) {
+        if (tabIndex === 0) {
+            document.getElementById(`right-sidebar-tasks-tab-${courseId}`).className = "nav-link"
+            document.getElementById(`right-sidebar-tasks-${courseId}`).style.display = "none"
+
+            document.getElementById(`right-sidebar-announcements-tab-${courseId}`).className = "nav-link active"
+            document.getElementById(`right-sidebar-announcements-${courseId}`).style.display = "block"
+        } else if (tabIndex === 1) {
+            console.log(`right-sidebar-announcements-tab${courseId}`)
+            document.getElementById(`right-sidebar-announcements-tab-${courseId}`).className = "nav-link"
+            document.getElementById(`right-sidebar-announcements-${courseId}`).style.display = "none"
+
+            document.getElementById(`right-sidebar-tasks-tab-${courseId}`).className = "nav-link active"
+            document.getElementById(`right-sidebar-tasks-${courseId}`).style.display = "block"
+        }
+    }
+
+    function menuMyFunction(id) {
+        document.getElementById("dropcheck").checked = false;
+        myFunction(id);
+    }
+
+    function myFunction(id) {
+        // Set old id items to display "none"
+        if (currentId !== null) {
+            // Set sidebar item
+            var s = document.getElementById(`sidebar-item-${currentId}`)
+            s.className = "list-group-item list-group-item-action bg-light";
+            s.style.color = "black"
+
+            var s = document.getElementById(`menu-item-${currentId}`)
+            s.className = "list-group-item list-group-item-action bg-light";
+            s.style.color = "black"
+
+            // Set page content
+            switch (currentId) {
+                case "tasks":
+                    document.getElementById("tasks").style.display = "none"
+                    break;
+                case "announcements":
+                    document.getElementById("announcements").style.display = "none"
+                    break;
+                default:
+                    document.getElementById(`bottom-links-${currentId}`).style.display = "none";
+                    document.getElementById(`page-content-${currentId}`).style.display = "none";
+                    document.getElementById(`right-bar-${currentId}`).style.display = "none";
+            }
+        }
+
+        // Set sidebar item
+        var s = document.getElementById(`sidebar-item-${id}`)
+        s.className = "list-group-item list-group-item-action bg-primary";
+        s.style.color = "white"
+
+        var s = document.getElementById(`menu-item-${id}`)
+        s.className = "list-group-item list-group-item-action bg-primary";
+        s.style.color = "white"
+
+
+        // Set page content
+        switch (id) {
+            case "tasks":
+                document.getElementById("tasks").style.display = "block"
+                break;
+            case "announcements":
+                document.getElementById("announcements").style.display = "block"
+                break;
+            default:
+                document.getElementById(`bottom-links-${id}`).style.display = "block";
+                document.getElementById(`page-content-${id}`).style.display = "block";
+                document.getElementById(`right-bar-${id}`).style.display = "block";
+        }
+
+        currentId = id;
+    } 
+</script>
+
+<body>
+    <div class="dropdown" id="example">
+        <input id="dropcheck" class="dropcheck" type="checkbox">
+        <label for="dropcheck" class="dropbtn"><i class="fa fa-bars"></i></label>
+
+        <div class="dropdown-content">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action bg-light" id="menu-item-announcements"
+                    onclick="menuMyFunction('announcements')"> Aankondigingen </a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" id="menu-item-tasks"
+                    onclick="menuMyFunction('tasks')"> Taken </a>
+            </div>
+            <h5 style="margin-top: 32px; margin-left: 8px;"> Vakken </h5>
+            <div class="list-group list-group-flush">
+                {% for vak in vakken %}
+                <a href="#" onclick="menuMyFunction('{{vak.id}}')"
+                    class="list-group-item list-group-item-action bg-light" id="menu-item-{{vak.id}}">
+                    {{vak.display_name}} </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .dropbtn {
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            position: relative;
+            display: block;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropcheck {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .dropcheck:checked~.dropdown-content {
+            display: block;
+        }
+
+
+        .dropcheck:checked+.dropbtn {
+            background-color: #0D6EFD;
+            color: white
+        }
+    </style>
+
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action bg-light" id="sidebar-item-announcements"
+                    onclick="myFunction('announcements')"> Aankondigingen </a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" id="sidebar-item-tasks"
+                    onclick="myFunction('tasks')"> Taken </a>
+            </div>
+            <h5 style="margin-top: 32px; margin-left: 8px;"> Vakken </h5>
+            <div class="list-group list-group-flush">
+                {% for vak in vakken %}
+                <a href="#" onclick="myFunction('{{vak.id}}')" class="list-group-item list-group-item-action bg-light"
+                    id="sidebar-item-{{vak.id}}"> {{vak.display_name}} </a>
+                {% endfor %}
+            </div>
+            <div class="element-to-stick-to-bottom">
+                <div id="bottom-items">
+                    {{bottom_items}}
+                </div>
+                <span class="brbig"></span>
+                <small>
+                    {{ lastupdated }}
+                </small>
+            </div>
+            <style>
+                .element-to-stick-to-bottom {
+                    position: absolute;
+                    bottom: 0;
+                    padding-left: 16px;
+                }
+            </style>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        {{courses_content}}
+
+        <div class="page-content-wrapper" id="announcements" style="display: none;">
+            {{announcements_content}}
+        </div>
+
+        <div class="page-content-wrapper" id="tasks" style="display: none;">
+            {{tasks_content}}
+        </div>
+
+        <style>
+            .right-bar {
+                min-width: 0;
+                width: 40%;
+                height: 100vh;
+                overflow: scroll;
+                box-sizing: border-box;
+                /* background-color: rgb(248, 249, 250); */
+            }
+        </style>
+    </div>
+
+</body>
+
+
+</html>
+
+<script>
+    // Connect all textfield to their localstorage
+    Object.entries(window.idLocalstoragekeyMapTextfield).forEach((m) => {
+        id = m[0];
+        localstoragekey = m[1]
+
+        inputField = document.getElementById(id);
+        inputField.value = localStorage.getItem(localstoragekey);
+
+        inputHandler = (e) => {
+            const id = e.target.id;
+            const value = e.target.value;
+            const localstoragekey = window.idLocalstoragekeyMapTextfield[id];
+
+            localStorage.setItem(localstoragekey, value)
+
+            window.localstoragekeyIdMapTextfield[localstoragekey].forEach((_id) => {
+                if (_id != id) {
+                    document.getElementById(_id).value = value;
+                }
+            })
+        }
+
+        inputField.addEventListener('input', inputHandler);
+        inputField.addEventListener('propertychange', inputHandler)
+    })
+
+    // Connect all checkboxes to their localstorage
+    Object.entries(window.idLocalstoragekeyMapCheckbox).forEach((m) => {
+        id = m[0];
+        localstoragekey = m[1]
+
+        checkbox = document.getElementById(id);
+        checkbox.checked = (localStorage.getItem(localstoragekey) === "true");
+
+        inputHandler = (e) => {
+            const id = e.target.id;
+            const value = e.target.checked;
+            console.log("CHANGE", value)
+            const localstoragekey = window.idLocalstoragekeyMapCheckbox[id];
+
+            localStorage.setItem(localstoragekey, value)
+
+            window.localstoragekeyIdMapCheckbox[localstoragekey].forEach((_id) => {
+                if (_id != id) {
+                    document.getElementById(_id).checked = value;
+                }
+            })
+        }
+
+        checkbox.addEventListener('change', inputHandler);
+    })
+
+
+
+</script>
+
+<style>
+    h6 {
+        display: inline
+    }
+
+    .brsmall {
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .brbig {
+        display: block;
+        margin-bottom: 32px;
+    }
+</style>
