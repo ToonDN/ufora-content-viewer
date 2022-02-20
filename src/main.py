@@ -33,7 +33,10 @@ create_directories()
 data = Data()
 data.load_basics()
 
+
 x = data.get_html()
+
+print(data.courses[0].all_topics())
 
 with open(f"{ED}/index.html", "w+") as f:
     f.write(x)

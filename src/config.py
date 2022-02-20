@@ -1,5 +1,5 @@
 # The directory where to output the generated html and downloaded files (the downloads will always be placed in a download subfolder)
-export_directory = "/home/toon/Desktop/uff"
+export_directory = "/home/toon/ufora_content_viewer_export"
 
 # Which browser to check for authentication cookies
 browsers = ("firefox",)
