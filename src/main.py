@@ -1,52 +1,67 @@
-from time import time
 import gevent.monkey
 gevent.monkey.patch_all()
-from data.data import Data
-from globals import DOWNLOADS_DIR, ED, LOCAL_STORAGE_PATH, LOCAL_STORAGE_TABLE, RUN_DIR, TEMP_DIR
-import os
-import shutil
+
+from helper_functions import *
 from jinja2 import Environment, FileSystemLoader
+import shutil
+import os
+from globals import DOWNLOADS_DIR, ED, LOCAL_STORAGE_PATH, LOCAL_STORAGE_TABLE, RUN_DIR, TEMP_DIR
+from data.data import Data
+import sys
+from time import time
 
 
 
-def create_directories():
-    # Create root dir
-    if not os.path.exists(ED):
-        os.makedirs(ED)
-
-    # Create and copy components dir
-    if not os.path.exists(f"{ED}/components"):
-        shutil.copytree(f"{RUN_DIR}/components", f"{ED}/components")
-
-    # Create downloads dir
-    if not os.path.exists(DOWNLOADS_DIR):
-        os.makedirs(DOWNLOADS_DIR)
-
-    # Create temp directory
-    if not os.path.exists(TEMP_DIR):
-        os.makedirs(TEMP_DIR)
+data: Data = None
 
 
-create_directories()
-    
+def build():
+    global data
 
-data = Data()
-data.load_basics()
+    create_directories()
+    print("Trying to log in")
+    data = Data()
+
+    if data.cookies == None:
+        print("No good cookies found")
+        exit()
+
+    print("Loading basics")
+    data.load_basics()
+
+    print("Writing files")
+    x = data.get_html()
+
+    with open(f"{ED}/index.html", "w+") as f:
+        f.write(x)
 
 
-x = data.get_html()
+def download():
+    global data
 
-print(data.courses[0].all_topics())
+    print("Starting conversion and downloading")
+    data.convert_and_download({"pptx": "pdf", "ppt": "pdf"})
+    print("Conversion and downloading done")
 
-with open(f"{ED}/index.html", "w+") as f:
-    f.write(x)
 
-exit()
+if __name__ == "__main__":
+    cmd = sys.argv[1]
+
+    if cmd == "build":
+        build()
+
+    elif cmd == "download":
+        build()
+        download()
+        build()
+
+    exit()
+
 
 # rendered = env.get_template("index.html").render(title="azerazerazr", vakken=data.courses)
 
 
-# index = rendered 
+# index = rendered
 
 # Write index
 # with open(f"{ED}/index.html", "w+") as f:
@@ -56,9 +71,6 @@ exit()
 # x = Data()
 
 
-
 # x.load_toc()
 
 # print(x.courses[0].display_name)
-
-

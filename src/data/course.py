@@ -66,7 +66,6 @@ class Course:
             
     @property
     def vtk_url(self):
-
         return g.custom_vtk_url_map.get(self.id, f'https://vtk.ugent.be/wiki/{ self.display_name.replace(" ", "-") }')
 
 

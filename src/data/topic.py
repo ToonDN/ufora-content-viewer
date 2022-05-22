@@ -32,7 +32,7 @@ class Topic:
     @property
     def usable_url(self):
         if self.is_downloaded:
-            return 'downloads/' + [name for name in os.listdir(g.ED + 'public/downloads') if str(self.full_id) in name][0]
+            return g.DOWNLOADS_DIR + '/' + [name for name in os.listdir(g.DOWNLOADS_DIR) if str(self.full_id) in name][0]
 
         if self.typeIdentifier == 'Link' and '/d2l/' not in self.url:
             return self.url
@@ -64,7 +64,7 @@ class Topic:
 
             # Convert file
             if in_ft in ("ppt", "pptx") and out_ft == "pdf":
-                os.system(f"libreoffice --headless --invisible --convert-to pdf {temp_file} --outdir {final_file} && rm {temp_file}")
+                os.system(f"libreoffice --headless --invisible --convert-to pdf {temp_file} --outdir {g.DOWNLOADS_DIR} && rm {temp_file}")
             elif in_ft in ("mkv") and out_ft == "mp4":
                 os.system(f"ffmpeg -i {temp_file} {final_file}")
 
