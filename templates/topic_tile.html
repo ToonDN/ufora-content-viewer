@@ -1,0 +1,30 @@
+<div>
+    <form style="display:flex;flex-direction:row">
+        <input class="form-check-input" type="checkbox" value="" id="{{id2}}"
+            style="padding-right: 10px; margin-right: 8px;">
+        <div class="col-auto">
+            <h6>
+                <a href="{{url}}" target="_blank"> {{title}} </a>
+            </h6>
+            <small> {{type}} </small>
+            &nbsp;
+            &nbsp;
+        </div>
+        <a href="{{direct_download_url}}" download>
+            -
+        </a>
+        &nbsp;
+
+        <input type="text" class="form-control form-control-sm" id="{{id1}}">
+
+
+
+    </form>
+
+    <span class="brsmall"></span>
+
+    <script>
+        addLocalstoragekeyIdMapping("{{localstoragekey1}}", "{{id1}}", "textfield")
+        addLocalstoragekeyIdMapping("{{localstoragekey2}}", "{{id2}}", "checkbox")
+    </script>
+</div>
