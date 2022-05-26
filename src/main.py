@@ -1,14 +1,13 @@
 import gevent.monkey
 gevent.monkey.patch_all()
-
-from helper_functions import *
-from jinja2 import Environment, FileSystemLoader
-import shutil
-import os
-from globals import DOWNLOADS_DIR, ED, LOCAL_STORAGE_PATH, LOCAL_STORAGE_TABLE, RUN_DIR, TEMP_DIR
-from data.data import Data
-import sys
 from time import time
+import sys
+from data.data import Data
+import os
+import shutil
+from jinja2 import Environment, FileSystemLoader
+from helper_functions import *
+from globals import CONFIG as c
 
 
 
@@ -32,7 +31,7 @@ def build():
     print("Writing files")
     x = data.get_html()
 
-    with open(f"{ED}/index.html", "w+") as f:
+    with open(f"{c.export_dir}/index.html", "w+") as f:
         f.write(x)
 
 
@@ -40,7 +39,14 @@ def download():
     global data
 
     print("Starting conversion and downloading")
-    data.convert_and_download({"pptx": "pdf", "ppt": "pdf"})
+    data.convert_and_download({"pptx": "pdf", "ppt": "pdf"}, tuple())
+    print("Conversion and downloading done")
+
+def download_all():
+    global data
+
+    print("Starting conversion and downloading")
+    data.convert_and_download({"pptx": "pdf", "ppt": "pdf"}, ("png", "pdf", "html"))
     print("Conversion and downloading done")
 
 
@@ -53,6 +59,20 @@ if __name__ == "__main__":
     elif cmd == "download":
         build()
         download()
+        build()
+
+    elif cmd == "export":
+        if (len(sys.argv) < 4):
+            print("\nUsage of export is: ufora export [DIRECTORY] [ORGUNITID]")
+            exit()
+
+        directory = sys.argv[2]
+        orgunitid = int(sys.argv[3])
+
+        c.set_export_directory(directory)
+        c.orgunitids = (orgunitid,)
+        build()
+        download_all()
         build()
 
     exit()

@@ -18,12 +18,12 @@ class Module:
         self.id = dic.get('ModuleId')
 
     
-    async def convert_and_download(self, session : ClientSession, mapping : dict):
+    async def convert_and_download(self, session : ClientSession, convert_mapping : dict, download_list : tuple):
         for module in self.modules:
-            await module.convert_and_download(session, mapping)
+            await module.convert_and_download(session, convert_mapping, download_list)
         
         for topic in self.topics:
-            await topic.convert_and_download(session, mapping)
+            await topic.convert_and_download(session, convert_mapping, download_list)
 
     
     @property

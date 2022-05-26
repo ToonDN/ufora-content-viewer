@@ -11,6 +11,7 @@ from data.announcement import Announcement
 from data.quiz import Quiz
 from data.assignment import Assignment
 from data.topic import Topic
+from globals import CONFIG as c
 
 class Course:
     def __init__(self, name, id) -> None:
@@ -33,9 +34,9 @@ class Course:
             result = result.union(module.all_topics())
         return list(result)
 
-    async def convert_and_download(self, session : ClientSession, mapping):
+    async def convert_and_download(self, session : ClientSession, convert_mapping : dict , download_list : tuple):
         for module in self.toc:
-            await module.convert_and_download(session, mapping)
+            await module.convert_and_download(session, convert_mapping, download_list)
 
 
     async def load_toc(self, session : ClientSession):
@@ -66,7 +67,7 @@ class Course:
             
     @property
     def vtk_url(self):
-        return g.custom_vtk_url_map.get(self.id, f'https://vtk.ugent.be/wiki/{ self.display_name.replace(" ", "-") }')
+        return c.custom_vtk_url_map.get(self.id, f'https://vtk.ugent.be/wiki/{ self.display_name.replace(" ", "-") }')
 
 
     def get_toc_html(self):

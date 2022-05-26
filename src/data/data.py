@@ -1,6 +1,5 @@
 from requests.cookies import cookiejar_from_dict
 from data.course import Course
-import globals as g
 import requests
 import json
 import asyncio
@@ -10,6 +9,7 @@ from datetime import datetime, timedelta
 import globals as g
 from session.browser_cookies import browser_cookies
 from data.announcement import Announcement
+from globals import CONFIG as c
 
 
 class Data:
@@ -27,7 +27,7 @@ class Data:
             self.courses : "list[Course]"= []
 
         current_ids = set([c.id for c in self.courses])
-        config_ids = set(g.courses)
+        config_ids = set(c.orgunitids)
 
         to_add = config_ids.difference(current_ids)
         to_remove = current_ids.difference(config_ids)
@@ -57,13 +57,13 @@ class Data:
 
 
     #* =============== Download content ======================
-    def convert_and_download(self, mapping):
+    def convert_and_download(self, convert_mapping : dict, download_list : tuple):
         # Mapping takes {"pptx": "pdf", "mkv": "mp4"}
-        asyncio.run(self.convert_and_download_async(mapping))
+        asyncio.run(self.convert_and_download_async(convert_mapping, download_list))
     
-    async def convert_and_download_async(self, mapping):
+    async def convert_and_download_async(self, convert_mapping : dict, download_list : tuple):
         session = aiohttp.ClientSession(cookies=self.cookies)
-        futures = [course.convert_and_download(session, mapping) for course in self.courses]
+        futures = [course.convert_and_download(session, convert_mapping, download_list) for course in self.courses]
 
         await asyncio.gather(*futures)
         await session.close()
@@ -166,9 +166,10 @@ class Data:
         return self.time.strftime("%d/%m/%Y, %H:%M:%S")
 
     def save(self):
-        f = open(g.WD + "data.obj", 'wb+')
-        pickle.dump(self, f)
-        f.close()
+        raise Exception("NOT IMPLEMENTED")
+        # f = open(c.WD + "data.obj", 'wb+')
+        # pickle.dump(self, f)
+        # f.close()
 
 
     #* ============== HTML =====================================

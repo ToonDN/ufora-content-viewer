@@ -1,10 +1,10 @@
 import browser_cookie3
 import grequests
-from globals import BROWSERS
+from globals import CONFIG as c
 import json
 
 url = 'https://ufora.ugent.be/d2l/api/lp/1.26/users/whoami'
-browsers = BROWSERS
+browsers = c.browsers
 
 
 def browser_cookies():
