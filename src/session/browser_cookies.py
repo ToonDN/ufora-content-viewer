@@ -1,11 +1,8 @@
 import browser_cookie3
 import grequests
-from globals import CONFIG as c
-import json
+from config import browsers
 
 url = 'https://ufora.ugent.be/d2l/api/lp/1.26/users/whoami'
-browsers = c.browsers
-
 
 def browser_cookies():
     maps = []

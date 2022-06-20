@@ -8,14 +8,17 @@ from data.topic import Topic
 import globals as g
 from datetime import datetime
 
+from helper_functions import Config
+
 class Module:
-    def __init__(self, course_id, dic : dict) -> None:
+    def __init__(self, config : Config, course_id, dic : dict) -> None:
         self.course_id = course_id
-        self.modules = [Module(course_id, mod) for mod in dic.get('Modules', [])]
-        self.topics = [Topic(course_id, top) for top in dic.get('Topics', [])]
+        self.modules = [Module(config, course_id, mod) for mod in dic.get('Modules', [])]
+        self.topics = [Topic(config, course_id, top) for top in dic.get('Topics', [])]
         self.sortOrder = dic.get('SortOrder', -math.inf)
         self.title = dic.get('Title')
         self.id = dic.get('ModuleId')
+        self.config = config
 
     
     async def convert_and_download(self, session : ClientSession, convert_mapping : dict, download_list : tuple):

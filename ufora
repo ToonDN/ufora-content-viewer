@@ -3,4 +3,4 @@
 arg1="$1"
 
 
-/bin/python3.10 $(pwd)/src/main.py "${@:1}"
+/bin/python3.10 $(pwd)/src/cli.py "${@:1}"

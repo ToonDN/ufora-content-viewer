@@ -1,4 +1,5 @@
 from requests.cookies import cookiejar_from_dict
+from helper_functions import Config
 from data.course import Course
 import requests
 import json
@@ -6,36 +7,28 @@ import asyncio
 import pickle
 import aiohttp
 from datetime import datetime, timedelta
-import globals as g
+from globals import JINJA_ENV
 from session.browser_cookies import browser_cookies
 from data.announcement import Announcement
-from globals import CONFIG as c
 
 
 class Data:
-    def __init__(self) -> None:
-        self.init()
+    def __init__(self, config : Config) -> None:
+        self.init(config)
 
-    def init(self):
+    def init(self, config : Config):
         self.cookies = browser_cookies()
         self.time = datetime.now()
-
+        self.config = config
         self.update_courses()
+
 
     def update_courses(self):
         if not hasattr(self, "courses"):
             self.courses : "list[Course]"= []
-
-        current_ids = set([c.id for c in self.courses])
-        config_ids = set(c.orgunitids)
-
-        to_add = config_ids.difference(current_ids)
-        to_remove = current_ids.difference(config_ids)
         
-        self.add_courses(list(to_add))
-        [self.remove_course(i) for i in list(to_remove)]
+        self.add_courses(list(self.config.orgunitids))
         
-    
     def r_session(self):
         s = requests.session()
         s.cookies = cookiejar_from_dict(self.cookies)
@@ -124,7 +117,7 @@ class Data:
                 paging_info = txt.get("PagingInfo", {})
                 items = txt['Items']
                 items = [item for item in items if item['OrgUnit']['Id'] in ids]
-                self.courses = [Course(item['OrgUnit']['Name'], item['OrgUnit']['Id']) for item in items]
+                self.courses = [Course(self.config, item['OrgUnit']['Name'], item['OrgUnit']['Id']) for item in items]
 
                 if paging_info.get("HasMoreItems", False):
                     params = {"bookmark": paging_info.get("Bookmark")}
@@ -203,7 +196,7 @@ class Data:
         courses_content = "".join([c.get_html() for c in self.courses])
         
 
-        return g.JINJA_ENV.get_template("index.html").render(
+        return JINJA_ENV.get_template("index.html").render(
             courses_content=courses_content,
             bottom_items=self.get_bottom_links_html(),
             vakken=self.courses, 

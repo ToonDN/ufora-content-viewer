@@ -1,14 +1,14 @@
 <div class="card">
-    <input type="text" class="form-control form-control-sm" id="{{id}}"
-        style="margin-inline: 8px; margin-top: 10px; width: calc(100% - 18px); ">
-    <div class="card-body">
-        <h5 class="card-title"> {{title}} </h5>
-        <h6 class="card-subtitle mb-2 text-muted"> {{date_string}} </h6>
-        <p class="card-text"> {{content}} </p>
-    </div>
-    <p />
+  <input type="text" class="form-control form-control-sm" id="{{id}}"
+    style="margin-inline: 8px; margin-top: 10px; width: calc(100% - 18px); ">
+  <div class="card-body">
+    <h5 class="card-title"> {{title}} </h5>
+    <h6 class="card-subtitle mb-2 text-muted"> {{date_string}} </h6>
+    <p class="card-text"> {{content}} </p>
+  </div>
+  <p />
 </div>
 
 <script>
-    addLocalstoragekeyIdMapping("{{localstoragekey}}", "{{id}}", "textfield")
+  addLocalstoragekeyIdMapping("{{localstoragekey}}", "{{id}}", "textfield")
 </script>

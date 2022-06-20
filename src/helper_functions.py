@@ -1,8 +1,22 @@
 import os
 import shutil
-from globals import CONFIG as c
+import config as C
 
-def create_directories():
+
+class Config:
+    def __init__(self, export_directory: str, orgunitids: "list(str)") -> None:
+        self.run_dir = os.getcwd()
+        self.export_dir = export_directory
+        self.downloads_dir = export_directory + "/downloads"
+        self.temp_dir = export_directory + "/temp"
+        self.orgunitids = orgunitids
+
+    def set_export_directory(self, export_directory):
+        self.export_dir = export_directory
+        self.downloads_dir = export_directory + "/downloads"
+        self.temp_dir = export_directory + "/temp"
+
+def create_directories(c : Config):
     print(c.downloads_dir)
     # Create root dir
     if not os.path.exists(c.export_dir):
