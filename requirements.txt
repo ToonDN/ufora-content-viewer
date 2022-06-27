@@ -3,3 +3,4 @@ aiohttp == 3.8.1
 aiofiles == 0.8.0
 browser_cookie3 == 0.13.0
 typer == 0.4.1
+jinja2 == 3.0.3
