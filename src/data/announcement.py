@@ -1,9 +1,4 @@
-import asyncio
-import json
-import math
 from aiohttp import ClientSession
-import os
-import aiofiles
 import globals as g
 from datetime import datetime
 

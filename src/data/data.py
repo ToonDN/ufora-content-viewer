@@ -4,7 +4,6 @@ from data.course import Course
 import requests
 import json
 import asyncio
-import pickle
 import aiohttp
 from datetime import datetime, timedelta
 from globals import JINJA_ENV
@@ -39,19 +38,18 @@ class Data:
         asyncio.run(self.load_toc_async())
 
     async def load_toc_async(self):
-        # try:
         session = aiohttp.ClientSession(cookies=self.cookies)
         futures = [course.load_toc(session) for course in self.courses]
         await asyncio.gather(*futures)
         await session.close()
-        # except:
-        #     print('Failed to refresh, make sure you are logged in.')
-        #     await session.close()
 
 
     #* =============== Download content ======================
     def convert_and_download(self, convert_mapping : dict, download_list : tuple):
-        # Mapping takes {"pptx": "pdf", "mkv": "mp4"}
+        '''
+        Mapping takes {"pptx": "pdf", "mkv": "mp4"}
+        '''
+        
         asyncio.run(self.convert_and_download_async(convert_mapping, download_list))
     
     async def convert_and_download_async(self, convert_mapping : dict, download_list : tuple):

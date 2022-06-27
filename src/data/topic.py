@@ -1,11 +1,6 @@
-import asyncio
-import json
-import math
 from aiohttp import ClientSession
 import os
 import aiofiles
-from datetime import datetime
-from jinja2 import Environment, FileSystemLoader
 from globals import JINJA_ENV, UNIQUE_ID
 
 from helper_functions import Config

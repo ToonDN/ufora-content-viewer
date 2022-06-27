@@ -12,7 +12,7 @@ CUSTOM_VTK_URL_MAP = {
         440412: "https://vtk.ugent.be/wiki/big_data_science/",
     }
     
-# Local storage mananging 
+# Local storage managing (not implemented yet)
 # Since all data is stored in the browsers local storage this can be used to backup all data
 local_storage_path = "/home/toon/.mozilla/firefox/qylnyonf.default-release/webappsstore.sqlite"
 local_storage_table = "webappsstore2"

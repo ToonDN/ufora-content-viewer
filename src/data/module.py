@@ -1,12 +1,7 @@
-import asyncio
-import json
 import math
 from aiohttp import ClientSession
-import os
-import aiofiles
 from data.topic import Topic
 import globals as g
-from datetime import datetime
 
 from helper_functions import Config
 
