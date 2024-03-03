@@ -115,7 +115,7 @@ class Data:
                 paging_info = txt.get("PagingInfo", {})
                 items = txt['Items']
                 items = [item for item in items if item['OrgUnit']['Id'] in ids]
-                self.courses = [Course(self.config, item['OrgUnit']['Name'], item['OrgUnit']['Id']) for item in items]
+                self.courses.extend([Course(self.config, item['OrgUnit']['Name'], item['OrgUnit']['Id']) for item in items])
 
                 if paging_info.get("HasMoreItems", False):
                     params = {"bookmark": paging_info.get("Bookmark")}

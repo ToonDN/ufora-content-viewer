@@ -17,7 +17,6 @@ def build(output_directory: str = typer.Option(..., "--output"),
           download_filetypes: str = typer.Option("", "--download"),
           convert_filetypes: str = typer.Option("", "--convert"),
           max_size: int = typer.Option(10)):
-
     courses = list({int(c) for c in courses.split(",")})
     download_list = [i for i in download_filetypes.split(",")]
     convert_dict = [i.split(":")
